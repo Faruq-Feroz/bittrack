@@ -72,7 +72,7 @@ body {
     font-size: 4rem !important;
     margin-left: 20px;
   }
-@media (max-width768px){
+@media (max-width:768px){
      #main-content #sat{
     font-size: 2rem !important;
     margin-left: 10px;
