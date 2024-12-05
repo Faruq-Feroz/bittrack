@@ -72,6 +72,11 @@ body {
     font-size: 4rem !important;
     margin-left: 20px;
   }
+@media (max-width768px){
+     #main-content #sat{
+    font-size: 2rem !important;
+    margin-left: 10px;
+  }
 
   .button-container {
     display: flex;
