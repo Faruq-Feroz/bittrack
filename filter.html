@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BitTrack - Transactions</title>
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: #fff;
+    }
+
+    #transactions-page {
+      text-align: center;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      max-width: 800px;
+      width: 90%;
+    }
+
+    #transactions-page h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #FFD700;
+    }
+
+    #transactions-page .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    #transactions-page .filter-container select,
+    #transactions-page .filter-container input {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      color: #fff;
+      background: linear-gradient(135deg, #2C3E50, #4CA1AF);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #transactions-page .filter-container select:hover,
+    #transactions-page .filter-container input:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #34495E, #5DADE2);
+    }
+
+    #transactions-page .transactions-container {
+      max-height: 400px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #transactions-page .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #1D1F21, #3A3F44);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #transactions-page .transaction-item:hover {
+      transform: scale(1.02);
+      background: linear-gradient(135deg, #2A2F34, #4B525B);
+    }
+
+    #transactions-page .transaction-item span {
+      font-size: 1rem;
+    }
+
+    #transactions-page .transaction-item .amount {
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    #transactions-page .transaction-item.outgoing .amount {
+      color: #FF5722;
+    }
+
+    @media (max-width: 480px) {
+      #transactions-page h1 {
+        font-size: 1.5rem;
+      }
+
+      #transactions-page .filter-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      #transactions-page .transaction-item span {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="transactions-page">
+    <h1>Transactions</h1>
+
+    <!-- Filter Section -->
+    <div class="filter-container">
+      <label for="filter-type">Transaction Type:</label>
+      <select id="filter-type">
+        <option value="all">All Transactions</option>
+        <option value="incoming">Incoming</option>
+        <option value="outgoing">Outgoing</option>
+      </select>
+
+      <label for="filter-date">Date:</label>
+      <input type="date" id="filter-date" />
+    </div>
+
+    <!-- Transactions List -->
+    <div class="transactions-container">
+      <div class="transaction-item incoming" data-date="2024-12-01">
+        <span>Received from: John</span>
+        <span class="amount">+15 Sats</span>
+      </div>
+      <div class="transaction-item outgoing" data-date="2024-12-02">
+        <span>Sent to: Alice</span>
+        <span class="amount">-10 Sats</span>
+      </div>
+      <div class="transaction-item incoming" data-date="2024-12-03">
+        <span>Received from: Bob</span>
+        <span class="amount">+25 Sats</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript to filter transactions
+    const filterType = document.getElementById('filter-type');
+    const filterDate = document.getElementById('filter-date');
+    const transactions = document.querySelectorAll('.transaction-item');
+
+    function filterTransactions() {
+      const selectedType = filterType.value;
+      const selectedDate = filterDate.value;
+
+      transactions.forEach(transaction => {
+        const isIncoming = transaction.classList.contains('incoming');
+        const isOutgoing = transaction.classList.contains('outgoing');
+        const transactionDate = transaction.getAttribute('data-date');
+
+        const matchesType =
+          selectedType === 'all' ||
+          (selectedType === 'incoming' && isIncoming) ||
+          (selectedType === 'outgoing' && isOutgoing);
+
+        const matchesDate =
+          !selectedDate || transactionDate === selectedDate;
+
+        transaction.style.display = matchesType && matchesDate ? 'flex' : 'none';
+      });
+    }
+
+    filterType.addEventListener('change', filterTransactions);
+    filterDate.addEventListener('input', filterTransactions);
+  </script>
+</body>
+</html>
